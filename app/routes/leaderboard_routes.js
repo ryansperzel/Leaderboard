@@ -1,6 +1,12 @@
 module.exports = function(app, db) {
   app.post('/leaderboard', (req, res) => {
-    // create a leaderboard here
-    res.send('this is your leaderboard')
+    const board = { text: req.body.body, title: req.body.title }
+    db.db().collection('leaderboard').insert(board, (err, result) => {
+      if (err) {
+        res.send({ err: 'An error has occurred' })
+      } else {
+        res.send(result.ops[0])
+      }
+    })
   })
 }
